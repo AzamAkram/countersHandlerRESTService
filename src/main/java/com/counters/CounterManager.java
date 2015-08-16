@@ -5,6 +5,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Root resource (exposed at "countermanager" path)
@@ -21,7 +23,7 @@ public class CounterManager {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getIt() {
-        return "Hello, Heroku!";
+        return "Hello from counter manager!";
     }
 
 
