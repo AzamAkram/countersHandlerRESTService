@@ -53,8 +53,8 @@ public class CounterManager {
     @Path("/getcountervalue/{counterName}")
     @Produces(MediaType.TEXT_PLAIN)
     public Long getCounterValue(@PathParam("counterName") String counterName) throws JSONException {
-        // throws exception if the key is not found or if the value cannot be converted to an integer.
-        return jsonCounters.getInt(counterName);
+        // throws exception  if the key is not found or if the value cannot be converted to a long.
+        return jsonCounters.getLong(counterName);
     }
 
     @GET @Path("/getallcounters")
