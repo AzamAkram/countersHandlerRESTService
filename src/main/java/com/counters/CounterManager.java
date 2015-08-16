@@ -54,7 +54,7 @@ public class CounterManager {
                 jsonCounters.increment(counterName);
             } else {
                 // If not present in the list, add it and starts its value form 1
-                jsonCounters.put(counterName, new Long(1));
+                jsonCounters.put(counterName, new Long(1L));
             }
         } catch (JSONException e) {
             // JSONException - If there is already a property with this name that is not a Long.
@@ -66,20 +66,14 @@ public class CounterManager {
     @GET
     @Path("/getcountervalue/{counterName}")
     @Produces(MediaType.TEXT_PLAIN)
-<<<<<<< HEAD
     public Long getCounterValue(@PathParam("counterName") String counterName) {
         try {
             // Return actual counter value if found in the json list or return -1 as shown in catch block
             return jsonCounters.getLong(counterName);
         } catch (JSONException e) {
             // JSONException - if the key is not found or if the value cannot be converted to a long.
-            return -1;
+            return 0L;
         }
-=======
-    public Long getCounterValue(@PathParam("counterName") String counterName) throws JSONException {
-        // throws exception  if the key is not found or if the value cannot be converted to a long.
-        return jsonCounters.getLong(counterName);
->>>>>>> 6d8ee510b2b0f245bb3b0223d36348291f75fab7
     }
 
     @GET @Path("/getallcounters")
