@@ -35,7 +35,7 @@ public class CounterManager {
 
     @GET
     @Path("/incrementcountervalue/{counterName}")
-    public String incrementCounterValue(@PathParam("counterName") String counterName) throws JSONException {
+    public void incrementCounterValue(@PathParam("counterName") String counterName) throws JSONException {
         /*
         * First search this counter name into counters json object,
         *  if it is already there then increment its value by 1
