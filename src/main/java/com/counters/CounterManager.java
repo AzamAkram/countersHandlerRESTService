@@ -14,6 +14,13 @@ import org.json.JSONObject;
 @Path("countermanager")
 public class CounterManager {
 
+    /*
+    * A JSONObject is an unordered collection of name/value pairs.
+    * http://www.json.org/javadoc/org/json/JSONObject.html
+    */
+
+    private static JSONObject jsonCounters = new JSONObject();
+
     /**
      * Method handling HTTP GET requests. The returned object will be sent
      * to the client as "text/plain" media type.
@@ -26,48 +33,33 @@ public class CounterManager {
         return "Hello from counter manager!";
     }
 
-
-
     @GET
     @Path("/incrementcountervalue/{counterName}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String incrementCounterValue(@PathParam("counterName") String counterName) {
-        /*try {
-            // First search this counter name into counters json object
-            // if it is already there then increment its value by 1
-            if (jsonCounters.has(counterName)) {
-                jsonCounters.increment(counterName);
-            } else {
-                jsonCounters.put(counterName, new Long(1));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-
-        return counterName;        
+    public String incrementCounterValue(@PathParam("counterName") String counterName) throws JSONException {
+        /*
+        * First search this counter name into counters json object,
+        *  if it is already there then increment its value by 1
+        * has() returns true if the key exists in the JSONObject.
+        */
+        if (jsonCounters.has(counterName)) {
+            jsonCounters.increment(counterName);
+        } else {
+            // If not present in the list, add it and starts its value form 1
+            jsonCounters.put(counterName, new Long(1));
+        }
     }
 
     @GET
     @Path("/getcountervalue/{counterName}")
     @Produces(MediaType.TEXT_PLAIN)
-    public int getCounterValue(@PathParam("counterName") String counterName) { 
-        /*try {
-            // return the counter value 
-            return jsonCounters.getInt(counterName);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return -1;
-        }*/
-
-        return 1;
+    public int getCounterValue(@PathParam("counterName") String counterName) throws JSONException {
+        // throws exception if the key is not found or if the value cannot be converted to an integer.
+        return jsonCounters.getInt(counterName);
     }
-
 
     @GET @Path("/getallcounters")
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllCounters() {
-        //return jsonCounters.toString();
-
-        return "getAllCounters";
+        return jsonCounters.toString();
     }
 }
