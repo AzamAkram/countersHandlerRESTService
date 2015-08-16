@@ -1,3 +1,9 @@
+/*
+* This is a simple Jersey REST service which manages different counter values.
+* Developer: Muhammad Azam Akram
+* Email: akram.muhammadazam@gmail.com
+*
+*/
 package com.counters;
 
 import javax.ws.rs.GET;
@@ -35,26 +41,39 @@ public class CounterManager {
 
     @GET
     @Path("/incrementcountervalue/{counterName}")
-    public void incrementCounterValue(@PathParam("counterName") String counterName) throws JSONException {
-        /*
-        * First search this counter name into counters json object,
-        *  if it is already there then increment its value by 1
-        * has() returns true if the key exists in the JSONObject.
-        */
-        if (jsonCounters.has(counterName)) {
-            jsonCounters.increment(counterName);
-        } else {
-            // If not present in the list, add it and starts its value form 1
-            jsonCounters.put(counterName, new Long(1));
+    @Produces(MediaType.TEXT_PLAIN)
+    public Boolean incrementCounterValue(@PathParam("counterName") String counterName) {
+
+        try {
+            /*
+            * First search this counter name into counters json object,
+            *  if it is already there then increment its value by 1
+            * has() returns true if the key exists in the JSONObject.
+            */
+            if (jsonCounters.has(counterName)) {
+                jsonCounters.increment(counterName);
+            } else {
+                // If not present in the list, add it and starts its value form 1
+                jsonCounters.put(counterName, new Long(1));
+            }
+        } catch (JSONException e) {
+            // JSONException - If there is already a property with this name that is not a Long.
+            return false;
         }
+        return true;        
     }
 
     @GET
     @Path("/getcountervalue/{counterName}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Long getCounterValue(@PathParam("counterName") String counterName) throws JSONException {
-        // throws exception if the key is not found or if the value cannot be converted to an integer.
-        return jsonCounters.getInt(counterName);
+    public Long getCounterValue(@PathParam("counterName") String counterName) {
+        try {
+            // Return actual counter value if found in the json list or return -1 as shown in catch block
+            return jsonCounters.getLong(counterName);
+        } catch (JSONException e) {
+            // JSONException - if the key is not found or if the value cannot be converted to a long.
+            return -1;
+        }
     }
 
     @GET @Path("/getallcounters")
